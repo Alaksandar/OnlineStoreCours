@@ -1,12 +1,7 @@
 import React, { useContext } from 'react'
 import { NavLink } from 'react-router-dom'
 import { observer } from 'mobx-react-lite'
-
-import Container from 'react-bootstrap/Container'
-import Nav from 'react-bootstrap/Nav'
-import Navbar from 'react-bootstrap/Navbar'
-import Button from 'react-bootstrap/Button'
-
+import { Container, Nav, Navbar, Button } from 'react-bootstrap'
 import { Context } from '..'
 import { SHOP_ROUTE } from '../utils/constants'
 
