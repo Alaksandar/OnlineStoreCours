@@ -3,7 +3,8 @@ import Auth from "./pages/Auth"
 import Bascket from "./pages/Bascket"
 import DevicePage from "./pages/DevicePage"
 import Shop from "./pages/Shop"
-import { ADMIN_ROUTE, BASCKET_ROUTE, DEVICE_ROUTE, LOGIN_ROUTE, REGISTRATION_ROUTE, SHOP_ROUTE } from "./utils/constants"
+import { ADMIN_ROUTE, BASCKET_ROUTE, DEVICE_ROUTE, 
+        LOGIN_ROUTE, REGISTRATION_ROUTE, SHOP_ROUTE } from "./utils/constants"
 
 export const authRoutes = [
     {
