@@ -2,6 +2,7 @@ import { observer } from 'mobx-react-lite'
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Card, Col, Image } from 'react-bootstrap'
+import DeviceRating from './DeviceRating'
 import { DEVICE_ROUTE } from '../utils/constants'
 
 const DeviceItem = observer(({device}) => {
@@ -15,7 +16,7 @@ const DeviceItem = observer(({device}) => {
             >
                 <Image width={150} height={150} src={device.img} />
                 <div>{device.name}</div>
-                <div>{device.rating}</div>
+                <DeviceRating rating={device.rating}/>
                 <p>{device.price} zł</p>
                 
             </Card>
