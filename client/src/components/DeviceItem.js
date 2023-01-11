@@ -14,7 +14,7 @@ const DeviceItem = observer(({device}) => {
                 style={{cursor: 'pointer', width: 150}} border={'light'}
                 className='p-3 m-1'
             >
-                <Image height={150} src={process.env.REACT_APP_API_URL + device.img} />
+                <Image width={150} height={150} src={process.env.REACT_APP_API_URL + device.img} />
                 <div>{device.name}</div>
                 <DeviceRating rating={device.rating}/>
                 <p>{device.price} zł</p>
