@@ -3,12 +3,19 @@ import { NavLink, useNavigate } from 'react-router-dom'
 import { observer } from 'mobx-react-lite'
 import { Container, Nav, Navbar, Button } from 'react-bootstrap'
 import { Context } from '..'
-import { ADMIN_ROUTE, LOGIN_ROUTE, SHOP_ROUTE } from '../utils/constants'
+import { ADMIN_ROUTE, BASCKET_ROUTE, LOGIN_ROUTE, SHOP_ROUTE } from '../utils/constants'
 
 const NavBar = observer(() => {
     const {user} = useContext(Context)
     const navigate = useNavigate()
-    console.log(user.isAuth);
+    const logOut = () => {
+        user.setUser({})
+        user.setIsAuth(false)
+        if (window.location.pathname === ADMIN_ROUTE ||
+            window.location.pathname === BASCKET_ROUTE) {
+            navigate(SHOP_ROUTE)
+        }
+    }
 
     return (
         <Navbar bg="dark" variant="dark">
@@ -24,9 +31,8 @@ const NavBar = observer(() => {
                         </Button>
                         <Button 
                             variant={'outline-light'}
-                            onClick={() => navigate(LOGIN_ROUTE)}
+                            onClick={() => logOut()}
                             className="ms-2"
-                            // onClick={() => user.setIsAuth(false)}
                         >
                             Log out
                         </Button>
@@ -34,7 +40,7 @@ const NavBar = observer(() => {
                     :
                     <Nav className="ml-auto" style={{color: 'white'}}>
                         <Button variant={'outline-light'} 
-                            onClick={() => user.setIsAuth(true)}
+                            onClick={() => navigate(LOGIN_ROUTE)}
                         >Sign in</Button>
                     </Nav>
                 }
