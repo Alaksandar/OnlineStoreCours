@@ -1,9 +1,8 @@
-import { useContext, useState } from 'react'
+import { useState } from 'react'
 import { Button, Form, Modal } from 'react-bootstrap'
 import { createType } from '../../http/deviceAPI'
 
 const CreateType = ({show, onHide}) => {
-    const {device} = useContext(Context)
     const [value, setValue] = useState('')
 
     const addType = () => {

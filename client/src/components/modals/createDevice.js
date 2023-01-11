@@ -1,15 +1,40 @@
-import React, { useContext, useState } from 'react'
+import { observer } from 'mobx-react-lite'
+import { useContext, useState } from 'react'
 import { Button, Col, Dropdown, Form, Modal, Row } from 'react-bootstrap'
 import { Context } from '../..'
+import { createDevice } from '../../http/deviceAPI'
 
-const CreateDevice = ({show, onHide}) => {
+const CreateDevice = observer(({show, onHide}) => {
     const {device} = useContext(Context)
-    const [activeType, setActiveType] = useState('')
-    const [activeBrand, setActiveBrand] = useState('')
+
+    const [name, setName] = useState('')
+    const [price, setPrice] = useState(0)
+    const [file, setFile] = useState(null)
     const [info, setInfo] = useState([])
 
+    const selectFile = e => {
+        setFile(e.target.files[0])
+    }
     const addInfo = () => setInfo([...info, {title: '', description: '', number: Date.now()}])
     const removeInfo = (number) => setInfo(info.filter(i => i.number !== number))
+    const changeInfo = (key, value, number) => {
+        setInfo(info.map(i => i.number === number ? {...i, [key]: value} : i))
+    }
+    const addDevice = () => {
+        const formData = new FormData()
+        formData.append('name', name)
+        formData.append('price', `${price}`)
+        formData.append('img', file)
+        formData.append('typeId', device.selectedType.id)
+        formData.append('brandId', device.selectedBrand.id)
+        formData.append('info', JSON.stringify(info))
+        createDevice(formData).then(data => onHide())
+    }
+
+// {title: 'Dimensions (HxWxD) [cm]', description: '185.3 x 59.5 x 65.8'}
+// {title: 'Annual electricity consumption', description: '295 kWh'}
+// {title: 'Number of doors', description: '2'}
+// {title: 'Functions', description: 'Fast cooling, Fast freezing, Changing the door opening direction'}
 
     return (
         <Modal
@@ -31,11 +56,11 @@ const CreateDevice = ({show, onHide}) => {
                             <Dropdown.Toggle>Select Type</Dropdown.Toggle>
                             <Dropdown.Menu>
                                 {device.types.map((type) =>
-                                    <Dropdown.Item key={type.id} onClick={() => setActiveType(type.name)}>{type.name}</Dropdown.Item>
+                                    <Dropdown.Item key={type.id} onClick={() => device.setSelectedType(type)}>{type.name}</Dropdown.Item>
                                 )}
                             </Dropdown.Menu>
                         </Dropdown>
-                        {activeType && <div>{activeType}</div>}
+                        {device.selectedType && <div>{device.selectedType.name}</div>}
                     </div>
 
                     <div className='d-flex align-items-center'>
@@ -43,24 +68,29 @@ const CreateDevice = ({show, onHide}) => {
                             <Dropdown.Toggle>Select Brand</Dropdown.Toggle>
                             <Dropdown.Menu>
                                 {device.brands.map((brand) =>
-                                    <Dropdown.Item key={brand.id} onClick={() => setActiveBrand(brand.name)}>{brand.name}</Dropdown.Item>
+                                    <Dropdown.Item key={brand.id} onClick={() => device.setSelectedBrand(brand)}>{brand.name}</Dropdown.Item>
                                 )}
                             </Dropdown.Menu>
                         </Dropdown>
-                        {activeBrand && <div>{activeBrand}</div>}
+                        {device.selectedBrand && <div>{device.selectedBrand.name}</div>}
                     </div>
 
                     <Form.Control                  
                         className='mt-2'
+                        value={name}
+                        onChange={e => setName(e.target.value)}
                         placeholder={'Add new DEVICE name..'}
                     />
                     <Form.Control
                         className='mt-2'
+                        value={price}
+                        onChange={e => setPrice(Number(e.target.value))}
                         placeholder={'Add new DEVICE price..'}
                         type='number'
                     />
                     <Form.Control
                         className='mt-2'
+                        onChange={selectFile}
                         type='file'
                     />
                     <hr/>
@@ -70,10 +100,16 @@ const CreateDevice = ({show, onHide}) => {
                     {info.map(i =>
                         <Row className='mt-2 mb-2 pe-3' key={i.number}>
                             <Col md={3} className='p-1'>
-                                <Form.Control placeholder='Add name of property..'/>
+                                <Form.Control
+                                    value={i.title}
+                                    onChange={e => changeInfo('title', e.target.value, i.number)}
+                                    placeholder='Add name of property..'/>
                             </Col>
                             <Col md={7} className='p-1'>
-                                <Form.Control placeholder='Add description of property..'/>
+                                <Form.Control
+                                    value={i.description}
+                                    onChange={e => changeInfo('description', e.target.value, i.number)}
+                                    placeholder='Add description of property..'/>
                             </Col>
                             <Col md={1} className='p-1'>
                                 <Button variant='outline-danger' onClick={() => removeInfo(i.number)}>Delete</Button>
@@ -85,10 +121,10 @@ const CreateDevice = ({show, onHide}) => {
 
             <Modal.Footer>
                 <Button variant='outline-danger' onClick={onHide}>Close</Button>
-                <Button variant='outline-success' onClick={onHide}>Add</Button>
+                <Button variant='outline-success' onClick={addDevice}>Add</Button>
             </Modal.Footer>
         </Modal>
     )
-}
+})
 
 export default CreateDevice
