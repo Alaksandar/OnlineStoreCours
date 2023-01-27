@@ -3,7 +3,7 @@ import { Button, Card, Col, Container, Form, Image, Row } from 'react-bootstrap'
 import bigStar from '../assets/golden-star.png'
 import { useNavigate, useParams } from 'react-router-dom'
 import { addToBasket, fetchOneDevice, getUserBasket } from '../http/deviceAPI'
-import { BASKET_ROUTE } from '../utils/constants'
+import { BASKET_ROUTE, DEFAULT_IMG } from '../utils/constants'
 import { Context } from '..'
 
 const DevicePage = () => {
@@ -32,7 +32,7 @@ const DevicePage = () => {
         <Container className='mt-3'>
             <Row >
                 <Col md={4} className='d-flex justify-content-center'>
-                    <Image width={300} height={300} src={process.env.REACT_APP_API_URL + device.img} />
+                    <Image width={300} height={300} src={process.env.REACT_APP_API_URL + (device.img || DEFAULT_IMG)} />
                 </Col>
                 <Col md={4} className='d-flex justify-content-around'>
                     <Form className='d-flex flex-column align-items-center justify-content-around'>

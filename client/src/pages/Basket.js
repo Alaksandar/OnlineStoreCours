@@ -4,14 +4,14 @@ import bigStar from '../assets/golden-star.png'
 import { fetchOneDevice, getUserBasket } from '../http/deviceAPI'
 import { Context } from '..'
 import { observer } from 'mobx-react-lite'
+import { useFetching } from '../hooks/useFetching'
 
 const Basket = observer(() => {
     const {deviceStore} = useContext(Context)
     const [devices, setDevices] = useState([])
-    const [isLoading, setIsLoading] = useState(true)
+    
 
-
-    const useFetchingDevaces = async () => {
+    const [fetchDevices, isLoading, fetchError] = useFetching(async() => {
         let tempDevices = []
         const basketDevices = await getUserBasket()
         await Promise.all(
@@ -21,15 +21,13 @@ const Basket = observer(() => {
             })
         )
         setDevices([...devices, ...tempDevices])
-        setIsLoading(false)
-    }
+    })
 
     useEffect(() => {
-        useFetchingDevaces()
+        fetchDevices()
 
     }, [])
     
-    console.log('devices', devices);
 
     if (isLoading) {
         return <Spinner animation='grow'/>
