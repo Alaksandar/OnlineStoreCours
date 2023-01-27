@@ -5,7 +5,7 @@ import { Context } from '../..'
 import { createDevice } from '../../http/deviceAPI'
 
 const CreateDevice = observer(({show, onHide}) => {
-    const {device} = useContext(Context)
+    const {deviceStore} = useContext(Context)
 
     const [name, setName] = useState('')
     const [price, setPrice] = useState(0)
@@ -25,8 +25,8 @@ const CreateDevice = observer(({show, onHide}) => {
         formData.append('name', name)
         formData.append('price', `${price}`)
         formData.append('img', file)
-        formData.append('typeId', device.selectedType.id)
-        formData.append('brandId', device.selectedBrand.id)
+        formData.append('typeId', deviceStore.selectedType.id)
+        formData.append('brandId', deviceStore.selectedBrand.id)
         formData.append('info', JSON.stringify(info))
         createDevice(formData).then(data => onHide())
     }
@@ -55,24 +55,24 @@ const CreateDevice = observer(({show, onHide}) => {
                         <Dropdown className='m-2'>
                             <Dropdown.Toggle>Select Type</Dropdown.Toggle>
                             <Dropdown.Menu>
-                                {device.types.map((type) =>
-                                    <Dropdown.Item key={type.id} onClick={() => device.setSelectedType(type)}>{type.name}</Dropdown.Item>
+                                {deviceStore.types.map((type) =>
+                                    <Dropdown.Item key={type.id} onClick={() => deviceStore.setSelectedType(type)}>{type.name}</Dropdown.Item>
                                 )}
                             </Dropdown.Menu>
                         </Dropdown>
-                        {device.selectedType && <div>{device.selectedType.name}</div>}
+                        {deviceStore.selectedType && <div>{deviceStore.selectedType.name}</div>}
                     </div>
 
                     <div className='d-flex align-items-center'>
                         <Dropdown className='m-2'>
                             <Dropdown.Toggle>Select Brand</Dropdown.Toggle>
                             <Dropdown.Menu>
-                                {device.brands.map((brand) =>
-                                    <Dropdown.Item key={brand.id} onClick={() => device.setSelectedBrand(brand)}>{brand.name}</Dropdown.Item>
+                                {deviceStore.brands.map((brand) =>
+                                    <Dropdown.Item key={brand.id} onClick={() => deviceStore.setSelectedBrand(brand)}>{brand.name}</Dropdown.Item>
                                 )}
                             </Dropdown.Menu>
                         </Dropdown>
-                        {device.selectedBrand && <div>{device.selectedBrand.name}</div>}
+                        {deviceStore.selectedBrand && <div>{deviceStore.selectedBrand.name}</div>}
                     </div>
 
                     <Form.Control                  

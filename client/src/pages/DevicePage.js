@@ -1,24 +1,32 @@
-import { useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { Button, Card, Col, Container, Form, Image, Row } from 'react-bootstrap'
 import bigStar from '../assets/golden-star.png'
-import { useParams } from 'react-router-dom'
-import { fetchOneDevice } from '../http/deviceAPI'
+import { useNavigate, useParams } from 'react-router-dom'
+import { addToBasket, fetchOneDevice, getUserBasket } from '../http/deviceAPI'
+import { BASKET_ROUTE } from '../utils/constants'
+import { Context } from '..'
 
 const DevicePage = () => {
+    const navigate = useNavigate()
+    const {deviceStore} = useContext(Context)
     const {id} = useParams()
     const [device, setDevice] = useState({info: []})
+    const [isBasketVisible, SetIsBasketVisible] = useState(false)
 
     useEffect(() => {
-      fetchOneDevice(id).then(data => setDevice(data))
+        getUserBasket().then(data => data.length > 0 && SetIsBasketVisible(true))
+        fetchOneDevice(id).then(data => setDevice(data))
     }, [])
-    
-    // const info = [
-    //     {id: 1, title: 'Dimensions', description: '131.5 x 64.2 x 7.4 mm (5.18 x 2.53 x 0.29 in)'},
-    //     {id: 2, title: 'OS', description: 'iOS 14.1, upgradable to iOS 16.2'},
-    //     {id: 3, title: 'Chipset', description: 'Apple A14 Bionic (5 nm)'},
-    //     {id: 4, title: 'CPU', description: 'Hexa-core (2x3.1 GHz Firestorm + 4x1.8 GHz Icestorm)'},
-    //     {id: 5, title: 'GPU', description: 'Apple GPU (4-core graphics)'},
-    // ]
+
+    const add = () => {
+        deviceStore.setBasketDevices(id)
+        addToBasket({deviceId: id}).then(data => console.log('Device ' + device.name + ' added to your basket!'))
+        SetIsBasketVisible(true)
+    }
+
+    const goToBasket = () => {
+        navigate(BASKET_ROUTE)
+    }
     
     return (
         <Container className='mt-3'>
@@ -43,7 +51,23 @@ const DevicePage = () => {
                         style={{width: 300, height: 300, fontSize:32, border: '5px solid #f4f5f7'}}    
                     >
                         <h3>from: {device.price} zł</h3>
-                        <Button variant={'outline-dark'}>Add to Bascket</Button>
+                        <div className='d-flex flex-column'>
+                            <Button
+                                onClick={add}
+                                variant={'outline-dark'}
+                            >
+                                Add to Basket
+                            </Button>
+                            {isBasketVisible &&
+                                <Button
+                                    onClick={goToBasket}
+                                    className='mt-2' 
+                                    variant={'outline-dark'}
+                                >
+                                    My Basket
+                                </Button>
+                            }
+                        </div>
                     </Card>
                 </Col>
             </Row>

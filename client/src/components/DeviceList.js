@@ -5,10 +5,10 @@ import { Context } from '..'
 import DeviceItem from './DeviceItem'
 
 const DeviceList = observer(() => {
-    const {device} = useContext(Context)
+    const {deviceStore} = useContext(Context)
     return (
         <div className='d-flex flex-wrap'>
-            {device.devices.map(device => 
+            {deviceStore.devices.map(device => 
                 <DeviceItem key={device.id} device={device}></DeviceItem>
             )}
         </div>

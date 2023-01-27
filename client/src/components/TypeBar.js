@@ -4,19 +4,19 @@ import { ListGroup } from 'react-bootstrap'
 import { Context } from '..'
 
 const TypeBar = observer(() => {
-    const {device} = useContext(Context)
+    const {deviceStore} = useContext(Context)
     const toggle = type => {
-        const selected = type.id !== device.selectedType?.id ? type : null
-        device.setSelectedType(selected)
+        const selected = type.id !== deviceStore.selectedType?.id ? type : null
+        deviceStore.setSelectedType(selected)
     }
 
     return (
         <ListGroup>
-            {device.types.map(type => 
+            {deviceStore.types.map(type => 
                 <ListGroup.Item 
                     key={type.id}
                     style={{cursor: 'pointer'}}
-                    active={type.id === device.selectedType?.id}
+                    active={type.id === deviceStore.selectedType?.id}
                     onClick={() => toggle(type)}
                 >
                     {type.name}

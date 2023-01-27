@@ -5,6 +5,8 @@ export default class DeviceStore {
         this._types = []
         this._brands = []
         this._devices = []
+        this._baskets = {}
+        this._basketDevices = []
     
         this._selectedType = {}
         this._selectedBrand = {}
@@ -27,6 +29,13 @@ export default class DeviceStore {
     setDevices(devices) {
         this._devices = devices
     }
+    setBasket(basket){
+        this._basket = basket
+    }
+    setBasketDevices(id) {
+        this._basketDevices = [...this._basketDevices, id]
+    }
+    
     setSelectedType(type) {
         this.setPage(1)
         this._selectedType = type
@@ -48,7 +57,7 @@ export default class DeviceStore {
         this._limit = limit
     }
 
-    // computed fns: get vars from state, is called if var changes
+    // computed fns: get vars from state, are called if var changes
     get types() {
         return this._types
     }
@@ -57,6 +66,12 @@ export default class DeviceStore {
     }
     get devices() {
         return this._devices
+    }
+    get basket() {
+        return this._baskets
+    }
+    get basketDevices() {
+        return this._basketDevices
     }
     get selectedType() {
         return this._selectedType

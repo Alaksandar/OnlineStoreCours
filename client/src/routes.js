@@ -1,9 +1,9 @@
 import Admin from "./pages/Admin"
 import Auth from "./pages/Auth"
-import Bascket from "./pages/Bascket"
+import Basket from "./pages/Basket"
 import DevicePage from "./pages/DevicePage"
 import Shop from "./pages/Shop"
-import { ADMIN_ROUTE, BASCKET_ROUTE, DEVICE_ROUTE, 
+import { ADMIN_ROUTE, BASKET_ROUTE, DEVICE_ROUTE, 
         LOGIN_ROUTE, REGISTRATION_ROUTE, SHOP_ROUTE } from "./utils/constants"
 
 export const authRoutes = [
@@ -12,8 +12,8 @@ export const authRoutes = [
         Component: Admin
     },
     {
-        path: BASCKET_ROUTE,
-        Component: Bascket
+        path: BASKET_ROUTE,
+        Component: Basket
     }
 ]
 
