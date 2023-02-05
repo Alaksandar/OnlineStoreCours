@@ -3,7 +3,7 @@ import { NavLink, useNavigate } from 'react-router-dom'
 import { observer } from 'mobx-react-lite'
 import { Container, Nav, Navbar, Button } from 'react-bootstrap'
 import { Context } from '..'
-import { ADMIN_ROUTE, BASCKET_ROUTE, LOGIN_ROUTE, SHOP_ROUTE } from '../utils/constants'
+import { ADMIN_ROUTE, BASKET_ROUTE, LOGIN_ROUTE, SHOP_ROUTE } from '../utils/constants'
 
 const NavBar = observer(() => {
     const {user} = useContext(Context)
@@ -12,7 +12,7 @@ const NavBar = observer(() => {
         user.setUser({})
         user.setIsAuth(false)
         if (window.location.pathname === ADMIN_ROUTE ||
-            window.location.pathname === BASCKET_ROUTE) {
+            window.location.pathname === BASKET_ROUTE) {
             navigate(SHOP_ROUTE)
         }
     }
@@ -23,11 +23,24 @@ const NavBar = observer(() => {
                 <NavLink style={{color: 'white'}} to={SHOP_ROUTE}>BuyDevice</NavLink>
                 {user.isAuth ?
                     <Nav className="ml-auto" style={{color: 'white'}}>
+                        <div className='d-flex align-self-center'>
+                            {user.user.email} |{user.user.id}|
+                        </div>
+                        {user.user.role === 'ADMIN' &&
+                            <Button 
+                                variant={'outline-light'}
+                                onClick={() => navigate(ADMIN_ROUTE)}
+                                className="ms-2"
+                            >
+                                Admin
+                            </Button>
+                        }
                         <Button 
                             variant={'outline-light'}
-                            onClick={() => navigate(ADMIN_ROUTE)}
+                            onClick={() => navigate(BASKET_ROUTE)}
+                            className="ms-2"
                         >
-                            Admin
+                            Basket
                         </Button>
                         <Button 
                             variant={'outline-light'}
