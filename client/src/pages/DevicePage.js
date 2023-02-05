@@ -16,7 +16,7 @@ const DevicePage = () => {
     useEffect(() => {
         getUserBasket().then(data => data.length > 0 && SetIsBasketVisible(true))
         fetchOneDevice(id).then(data => setDevice(data))
-    }, [])
+    }, [id])
 
     const add = () => {
         deviceStore.setBasketDevices(id)
